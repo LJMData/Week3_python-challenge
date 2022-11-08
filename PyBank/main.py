@@ -47,7 +47,6 @@ with open(bank_data,'r') as csvfile:
     w = (v/q)
     w = round(w,2)
     
-
     #Print the average difference in profits 
     print(f"Average Change: $" + str(w) +"\n")
     
@@ -64,4 +63,15 @@ with open(bank_data,'r') as csvfile:
     #Print out greatest increase and decrease
     print(f"Greatest Increase in Profits: "+ str(month[max_index_month]) + " ($" + str(get_profit[max_index]) + ")\n")
     print(f"Greatest Decrease in Profits: "+ str(month[min_index_month]) + " ($" + str(get_profit[min_index]) + ")\n\n")
+
+    #Write to text file 
+    output = os.path.join('analysis','Analysis.txt')
+    with open(output,'w') as text_file:
+        text_file.write("Financial Analysis \n _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n \n")
+        text_file.write(f"Total Months: " + str(len(month))+ "\n")
+        text_file.write(f"Total $" + str(sum(p)) + "\n")
+        text_file.write(f"Average Change: $" + str(w) +"\n")
+        text_file.write(f"Greatest Increase in Profits: "+ str(month[max_index_month]) + " ($" + str(get_profit[max_index]) + ")\n")
+        text_file.write(f"Greatest Decrease in Profits: "+ str(month[min_index_month]) + " ($" + str(get_profit[min_index]) + ")\n\n")
+
 

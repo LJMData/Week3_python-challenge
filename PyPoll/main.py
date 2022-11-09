@@ -1,6 +1,7 @@
 #import the functions needed 
 import os
 import csv
+from collections import Counter
 
 #import the data file
 vote_data = os.path.join('Resources','election_data.csv')
@@ -9,19 +10,28 @@ vote_data = os.path.join('Resources','election_data.csv')
 Vote_id = []
 candidate = []
 
-#Set the count to 0
-count = 0 
-
 #read the file 
 with open(vote_data,'r') as csvfile:
-    reader = csv.DictReader(csvfile)
+    reader = csv.reader(csvfile)
 
-    #Read all rows and append the list values
+    #Store the headers
+    headers = next(reader,None)
+    
+    column= {}
+
+    for h in headers:
+        column[h] = []
+
+    
     for row in reader:
-        count = count + 1
-        Vote_id.append(row['Ballot ID'])
-        candidate.append(row['Candidate'])
+        for h, e in zip(headers, row):
+            column[h].append(e)
 
+    #create empty lists 
+    Vote_id = column['Ballot ID']
+    candidate = column['Candidate']
+
+    
     #Print the headers
     print("\nElection Results \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n")
 

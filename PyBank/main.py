@@ -9,19 +9,29 @@ bank_data = os.path.join('Resources','budget_data.csv')
 month =[]
 profit =[]
 
-#Set count to 0
-count = 0
-
 #read the file 
 with open(bank_data,'r') as csvfile:
-    reader = csv.DictReader(csvfile)
-    
-    #read all the rows and append the list values
-    for row in reader:
-        count = count + 1 
-        month.append(row['Date'])
-        profit.append(row['Profit/Losses'])
+    reader = csv.reader(csvfile)
 
+    #Store the headers
+    headers = next(reader,None)
+    
+    column= {}
+
+    for h in headers:
+        column[h] = []
+
+    
+    for row in reader:
+        for h, e in zip(headers, row):
+            column[h].append(e)
+    
+   
+   #Add the values to the lists
+    month = column['Date']
+    profit = column ['Profit/Losses']
+       
+    
     #Turn the profit strings into intergers
     profit_num = (int(item) for item in profit)
 
@@ -66,12 +76,12 @@ with open(bank_data,'r') as csvfile:
 
     #Write to text file 
     output = os.path.join('analysis','Analysis.txt')
-    with open(output,'w') as text_file:
-        text_file.write("Financial Analysis \n _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n \n")
-        text_file.write(f"Total Months: " + str(len(month))+ "\n")
-        text_file.write(f"Total $" + str(sum(p)) + "\n")
-        text_file.write(f"Average Change: $" + str(w) +"\n")
-        text_file.write(f"Greatest Increase in Profits: "+ str(month[max_index_month]) + " ($" + str(get_profit[max_index]) + ")\n")
+    with open(output,'w',newline= "\n") as text_file:
+        text_file.write("Financial Analysis\n _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n")
+        text_file.write(f"Total Months: " + str(len(month))+ "\n\n")
+        text_file.write(f"Total $" + str(sum(p)) + "\n\n")
+        text_file.write(f"Average Change: $" + str(w) +"\n\n")
+        text_file.write(f"Greatest Increase in Profits: "+ str(month[max_index_month]) + " ($" + str(get_profit[max_index]) + ")\n\n")
         text_file.write(f"Greatest Decrease in Profits: "+ str(month[min_index_month]) + " ($" + str(get_profit[min_index]) + ")\n\n")
 
 
